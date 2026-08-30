@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="nls-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1ed760" />
+      <stop offset="100%" stop-color="#1db954" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="#121212" />
+  <circle cx="256" cy="256" r="210" fill="#181818" stroke="#282828" stroke-width="8" />
+  <g transform="translate(136, 126)">
+    <!-- Music note with lightning & download arrow -->
+    <path d="M190 40 L190 180 C175 168 150 162 120 168 C75 177 45 212 53 247 C61 282 104 303 149 294 C185 287 210 262 210 230 L210 90 L270 70 L270 40 Z" fill="url(#nls-grad)" filter="url(#glow)" />
+    <!-- Glowing Play / Audio Arc -->
+    <path d="M70 70 A120 120 0 0 0 70 190" stroke="#1ed760" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.8" />
+    <path d="M40 40 A160 160 0 0 0 40 220" stroke="#1ed760" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.4" />
+  </g>
+</svg>

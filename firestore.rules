@@ -1,0 +1,126 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation: User Profile
+    function isValidUserProfile(data, userId) {
+      return data.userId == userId &&
+             data.userId == request.auth.uid &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() > 0 && data.email.size() <= 200 &&
+             (!('username' in data) || (data.username is string && data.username.size() <= 50)) &&
+             (!('avatar' in data) || (data.avatar is string && data.avatar.size() <= 1000)) &&
+             (!('favoriteGenre' in data) || (data.favoriteGenre is string && data.favoriteGenre.size() <= 100)) &&
+             (!('role' in data) || data.role in ['user', 'premium']);
+    }
+
+    // Validation: User Playlist
+    function isValidUserPlaylist(data, userId) {
+      return data.userId == userId &&
+             data.userId == request.auth.uid &&
+             data.id is string && data.id.size() > 0 && data.id.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 150 &&
+             (!('description' in data) || (data.description is string && data.description.size() <= 500)) &&
+             (!('trackIds' in data) || (data.trackIds is list && data.trackIds.size() <= 500));
+    }
+
+    // Validation: User Favorite
+    function isValidUserFavorite(data, userId) {
+      return data.userId == userId &&
+             data.userId == request.auth.uid &&
+             data.id is string && data.id.size() > 0 && data.id.size() <= 128 &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 300 &&
+             data.artist is string && data.artist.size() > 0 && data.artist.size() <= 200 &&
+             (!('duration' in data) || data.duration is number) &&
+             (!('durationFormatted' in data) || (data.durationFormatted is string && data.durationFormatted.size() <= 20)) &&
+             (!('thumbnail' in data) || (data.thumbnail is string && data.thumbnail.size() <= 1000));
+    }
+
+    // Connection test document
+    match /test/connection {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Unique Username Registry
+    match /usernames/{username} {
+      // Anyone can check if a username exists (to prevent duplicates during registration & resolve login)
+      allow get: if true;
+      allow list: if false;
+      allow create: if isSignedIn() &&
+                       isValidId(username) &&
+                       incoming().userId == request.auth.uid &&
+                       incoming().username == username;
+      allow update: if isSignedIn() &&
+                       incoming().userId == request.auth.uid &&
+                       existing().userId == request.auth.uid;
+      allow delete: if isSignedIn() && existing().userId == request.auth.uid;
+    }
+
+    // Users collection and subcollections
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUserProfile(incoming(), userId);
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUserProfile(incoming(), userId) &&
+                       incoming().userId == existing().userId;
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      // Playlists subcollection
+      match /playlists/{playlistId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) &&
+                         isValidId(playlistId) &&
+                         isValidUserPlaylist(incoming(), userId);
+        allow update: if isOwner(userId) &&
+                         isValidId(playlistId) &&
+                         isValidUserPlaylist(incoming(), userId) &&
+                         incoming().userId == existing().userId;
+        allow delete: if isOwner(userId) && isValidId(playlistId);
+      }
+
+      // Favorites subcollection
+      match /favorites/{trackId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) &&
+                         isValidId(trackId) &&
+                         isValidUserFavorite(incoming(), userId);
+        allow update: if isOwner(userId) &&
+                         isValidId(trackId) &&
+                         isValidUserFavorite(incoming(), userId) &&
+                         incoming().userId == existing().userId;
+        allow delete: if isOwner(userId) && isValidId(trackId);
+      }
+    }
+  }
+}

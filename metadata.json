@@ -1,0 +1,10 @@
+{
+  "name": "NLSmusic",
+  "description": "Application de streaming et téléchargement de musique depuis YouTube avec conversion MP3 haute qualité, mode hors-ligne complet, sauvegarde sur l'appareil et bibliothèque intelligente.",
+  "requestFramePermissions": [
+    "notifications"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

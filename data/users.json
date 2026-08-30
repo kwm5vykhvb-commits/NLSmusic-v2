@@ -1,0 +1,28 @@
+[
+  {
+    "id": "usr_demo_1",
+    "name": "Isman NLS",
+    "email": "ismanls961@gmail.com",
+    "passwordHash": "90be876c0e70fb3f8054781f9f1c955c65c1d03b2c26ff65891834be67f5b5563347ac042c1cb33eb2176d7ece1398c377db867053d7159d4829879242c2f117",
+    "salt": "cec74926e98eb8d6c239e42659969372",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+    "role": "premium",
+    "favoriteGenre": "Rap Français",
+    "createdAt": 1788116210093,
+    "lastLoginAt": 1788120214444,
+    "username": "ismannls"
+  },
+  {
+    "id": "usr_1788120318508_5ab204ef",
+    "name": "musictest_195",
+    "username": "musictest_195",
+    "email": "musictest_195@nlsmusic.app",
+    "passwordHash": "5116394f3f97d159a1c753240fa3a1cd34fa4cd03a69ba9f9d045eb24e78256da1385e293b474b97841fe4207447f9ded81b0f9a61eacb82e1e5ebf9a6cf87c8",
+    "salt": "cee2741f29e6db7f443c2086f9e63a53",
+    "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=musictest_195",
+    "role": "user",
+    "favoriteGenre": "Rap Français",
+    "createdAt": 1788120318508,
+    "lastLoginAt": 1788120318585
+  }
+]

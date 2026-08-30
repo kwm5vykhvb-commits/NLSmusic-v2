@@ -1,0 +1,168 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User profile and account settings",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "username": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "avatar": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "premium", "admin"]
+        },
+        "favoriteGenre": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "name", "email", "createdAt", "updatedAt"]
+    },
+    "UsernameRecord": {
+      "title": "Username Claim Record",
+      "description": "Unique username claim registry to guarantee uniqueness",
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["username", "userId", "createdAt"]
+    },
+    "UserPlaylist": {
+      "title": "User Playlist",
+      "description": "Custom music playlists created by users",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "trackIds": {
+          "type": "array"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "name", "userId", "createdAt", "updatedAt"]
+    },
+    "UserFavorite": {
+      "title": "User Favorite Track",
+      "description": "Saved favorite music tracks of user",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "artist": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "duration": {
+          "type": "number"
+        },
+        "durationFormatted": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "thumbnail": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "addedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "title", "artist", "userId", "addedAt"]
+    }
+  },
+  "firestore": {
+    "/usernames/{username}": {
+      "schema": {
+        "$ref": "#/entities/UsernameRecord"
+      },
+      "description": "Unique username registry documents"
+    },
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "User profile records"
+    },
+    "/users/{userId}/playlists/{playlistId}": {
+      "schema": {
+        "$ref": "#/entities/UserPlaylist"
+      },
+      "description": "User playlists subcollection"
+    },
+    "/users/{userId}/favorites/{trackId}": {
+      "schema": {
+        "$ref": "#/entities/UserFavorite"
+      },
+      "description": "User favorite tracks subcollection"
+    }
+  }
+}

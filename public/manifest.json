@@ -1,0 +1,19 @@
+{
+  "name": "NLSmusic - Téléchargeur & Lecteur MP3",
+  "short_name": "NLSmusic",
+  "description": "Streaming, téléchargement MP3 320k / Lossless et lecture hors-ligne",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#1db954",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["music", "entertainment", "utilities"]
+}
