@@ -15,6 +15,7 @@ import {
   Mic2,
   ListMusic,
   Share2,
+  Tv,
 } from "lucide-react";
 import { useAudio } from "../context/AudioContext";
 import { useDownload } from "../context/DownloadContext";
@@ -48,6 +49,7 @@ export const FullScreenPlayer: React.FC<FullScreenPlayerProps> = ({
 
   const { isDownloaded, isFavorite, toggleFavorite, startDownload, settings } = useDownload();
   const [showLyricsPeek, setShowLyricsPeek] = useState(false);
+  const [isVideoMode, setIsVideoMode] = useState(false);
 
   if (!isOpen || !currentTrack) return null;
 
@@ -88,36 +90,73 @@ export const FullScreenPlayer: React.FC<FullScreenPlayerProps> = ({
         <div className="w-6" />
       </div>
 
-      {/* Center Section: Album Art & Info */}
-      <div className="flex flex-col items-center justify-center my-auto max-w-md md:max-w-xl mx-auto w-full py-4 space-y-6">
-        {/* Album Artwork */}
-        <div className="relative w-64 h-64 sm:w-80 sm:h-80 aspect-square rounded-3xl overflow-hidden shadow-2xl shadow-black bg-[#282828] flex-shrink-0">
-          <img
-            src={
-              currentTrack.thumbnail ||
-              "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop"
-            }
-            alt={currentTrack.title}
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover"
-          />
-
-          {/* Equalizer indicator */}
-          {isPlaying && (
-            <div className="absolute bottom-3 left-3 right-3 flex items-end justify-center gap-1 h-8 bg-black/40 backdrop-blur-md rounded-xl p-1.5">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <span
-                  key={i}
-                  className="w-1 bg-[#1db954] rounded-full animate-pulse"
-                  style={{
-                    height: `${Math.max(20, Math.sin(i * 0.7 + Date.now() / 300) * 100)}%`,
-                    animationDuration: `${0.35 + (i % 4) * 0.12}s`,
-                  }}
-                />
-              ))}
-            </div>
-          )}
+      {/* Center Section: Album Art or YouTube Video & Info */}
+      <div className="flex flex-col items-center justify-center my-auto max-w-md md:max-w-xl mx-auto w-full py-4 space-y-4">
+        {/* Toggle Mode: Audio Art vs YouTube Video */}
+        <div className="flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10 text-xs">
+          <button
+            onClick={() => setIsVideoMode(false)}
+            className={`px-3 py-1 rounded-full transition-all font-semibold ${
+              !isVideoMode
+                ? "bg-white text-black shadow"
+                : "text-zinc-400 hover:text-white"
+            }`}
+          >
+            Pochette
+          </button>
+          <button
+            onClick={() => setIsVideoMode(true)}
+            className={`px-3 py-1 rounded-full transition-all font-semibold flex items-center gap-1.5 ${
+              isVideoMode
+                ? "bg-[#ff0000] text-white shadow"
+                : "text-zinc-400 hover:text-white"
+            }`}
+          >
+            <Tv className="w-3.5 h-3.5" />
+            Vidéo YouTube
+          </button>
         </div>
+
+        {/* Album Artwork or YouTube Video Frame */}
+        {isVideoMode ? (
+          <div className="relative w-full aspect-video rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black bg-black border border-white/10 flex-shrink-0">
+            <iframe
+              src={`https://www.youtube.com/embed/${currentTrack.id}?autoplay=1&playsinline=1&rel=0`}
+              title={currentTrack.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full border-0"
+            />
+          </div>
+        ) : (
+          <div className="relative w-64 h-64 sm:w-80 sm:h-80 aspect-square rounded-3xl overflow-hidden shadow-2xl shadow-black bg-[#282828] flex-shrink-0">
+            <img
+              src={
+                currentTrack.thumbnail ||
+                "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop"
+              }
+              alt={currentTrack.title}
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover"
+            />
+
+            {/* Equalizer indicator */}
+            {isPlaying && (
+              <div className="absolute bottom-3 left-3 right-3 flex items-end justify-center gap-1 h-8 bg-black/40 backdrop-blur-md rounded-xl p-1.5">
+                {Array.from({ length: 16 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="w-1 bg-[#1db954] rounded-full animate-pulse"
+                    style={{
+                      height: `${Math.max(20, Math.sin(i * 0.7 + Date.now() / 300) * 100)}%`,
+                      animationDuration: `${0.35 + (i % 4) * 0.12}s`,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Track Title & Artist & Quick Actions */}
         <div className="w-full flex items-center justify-between gap-3 px-2">

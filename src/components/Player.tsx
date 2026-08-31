@@ -18,6 +18,7 @@ import {
   Check,
   Radio,
   ChevronUp,
+  Tv,
 } from "lucide-react";
 import { useAudio } from "../context/AudioContext";
 import { useDownload } from "../context/DownloadContext";
@@ -45,6 +46,8 @@ export const Player: React.FC<PlayerProps> = ({
     isShuffle,
     repeatMode,
     isBuffering,
+    isYouTubeOpen,
+    toggleYouTube,
     togglePlay,
     seek,
     setVolume,
@@ -137,6 +140,16 @@ export const Player: React.FC<PlayerProps> = ({
             className="flex items-center gap-1"
             onClick={(e) => e.stopPropagation()}
           >
+            <button
+              onClick={toggleYouTube}
+              className={`p-1.5 rounded-full ${
+                isYouTubeOpen ? "text-[#ff0000] bg-red-500/10" : "text-zinc-400"
+              }`}
+              title="Vidéo YouTube"
+            >
+              <Tv className="w-4 h-4 text-[#ff0000]" />
+            </button>
+
             <button
               onClick={() => toggleFavorite(currentTrack)}
               className={`p-1.5 rounded-full ${favorited ? "text-[#1db954]" : "text-zinc-400"}`}
@@ -349,6 +362,21 @@ export const Player: React.FC<PlayerProps> = ({
 
         {/* Right: Extra Controls & Volume */}
         <div className="flex items-center justify-end gap-2.5 w-1/4 min-w-[140px]">
+          {/* YouTube Video Toggle Button */}
+          <button
+            id="btn-toggle-youtube"
+            onClick={toggleYouTube}
+            className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs font-semibold ${
+              isYouTubeOpen
+                ? "bg-[#ff0000]/20 text-[#ff4e4e] border border-[#ff0000]/40"
+                : "text-zinc-400 hover:text-white hover:bg-white/5"
+            }`}
+            title={isYouTubeOpen ? "Masquer la vidéo YouTube" : "Afficher la vidéo YouTube"}
+          >
+            <Tv className="w-3.5 h-3.5 text-[#ff0000]" />
+            <span className="hidden xl:inline text-[10px]">Vidéo</span>
+          </button>
+
           {/* Lyrics Button */}
           <button
             id="btn-toggle-lyrics"

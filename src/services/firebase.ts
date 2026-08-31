@@ -180,11 +180,26 @@ export async function signInWithGoogle(): Promise<User | null> {
     }
     if (code === "auth/operation-not-allowed") {
       throw new Error(
-        "La connexion Google n'est pas activée sur ce projet. Veuillez vous connecter avec votre pseudo."
+        "Le fournisseur Google n'est pas encore activé dans votre console Firebase (Authentication > Sign-in method > Activer Google)."
+      );
+    }
+    if (code === "auth/unauthorized-domain") {
+      throw new Error(
+        "Ce domaine n'est pas autorisé dans Firebase Authentication (Console Firebase > Authentication > Paramètres > Domaines autorisés)."
+      );
+    }
+    if (code === "auth/account-exists-with-different-credential") {
+      throw new Error(
+        "Un compte existe déjà avec cette adresse email mais une autre méthode de connexion."
+      );
+    }
+    if (code === "auth/network-request-failed") {
+      throw new Error(
+        "Erreur réseau lors de la communication avec Google. Vérifiez votre connexion internet."
       );
     }
     console.warn("Google sign-in notice:", err?.message || err);
-    throw new Error(err?.message || "Erreur de connexion Google");
+    throw new Error(err?.message || "Impossible de se connecter avec Google.");
   }
 }
 

@@ -153,14 +153,14 @@ export const AuthScreen: React.FC = () => {
   return (
     <div
       id="auth-mandatory-screen"
-      className="min-h-screen w-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]"
+      className="min-h-screen w-full bg-[#0a0a0a] text-white flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 py-6 sm:py-10 overflow-y-auto relative font-['Plus_Jakarta_Sans',sans-serif]"
     >
       {/* Subtle Background Glows */}
-      <div className="absolute top-[-15%] left-[-10%] w-[450px] h-[450px] bg-[#1db954]/15 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-15%] right-[-10%] w-[500px] h-[500px] bg-[#10331d]/30 rounded-full blur-[140px] pointer-events-none" />
+      <div className="fixed top-[-15%] left-[-10%] w-[450px] h-[450px] bg-[#1db954]/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="fixed bottom-[-15%] right-[-10%] w-[500px] h-[500px] bg-[#10331d]/30 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Container Box */}
-      <div className="w-full max-w-md bg-[#161616] border border-[#2a2a2a] rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 overflow-hidden flex flex-col space-y-4">
+      <div className="w-full max-w-md bg-[#161616] border border-[#2a2a2a] rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 my-auto flex flex-col space-y-4 pb-8 sm:pb-8">
         {/* Top Green Accent Bar */}
         <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#1db954] via-[#1ed760] to-[#0d5c2a]" />
 
@@ -436,32 +436,6 @@ export const AuthScreen: React.FC = () => {
                   placeholder="email@exemple.com (optionnel)"
                   className="w-full bg-[#202020] border border-[#303030] focus:border-[#1db954] rounded-xl py-2 pl-10 pr-3 text-xs text-white placeholder:text-zinc-500 outline-none transition-colors"
                 />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-zinc-300 mb-1">
-                Mot de passe (min 6 caractères)
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-zinc-400 absolute left-3.5 top-2.5" />
-                <input
-                  id="auth-input-register-password"
-                  type={showPassword ? "text" : "password"}
-                  required
-                  minLength={6}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-[#202020] border border-[#303030] focus:border-[#1db954] rounded-xl py-2 pl-10 pr-10 text-xs text-white placeholder:text-zinc-500 outline-none transition-colors"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-zinc-400 hover:text-white"
-                >
-                  {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                </button>
               </div>
             </div>
 

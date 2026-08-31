@@ -44,6 +44,7 @@ import { BatchDownloadModal } from "./components/BatchDownloadModal";
 import { TagEditorModal } from "./components/TagEditorModal";
 import { DownloadQueueDrawer } from "./components/DownloadQueueDrawer";
 import { MultiSelectBar } from "./components/MultiSelectBar";
+import { YouTubeMiniPlayer } from "./components/YouTubeMiniPlayer";
 import { searchTracks, getTrendingTracks } from "./services/api";
 
 function MainApp() {
@@ -744,6 +745,11 @@ function MainApp() {
           onOpenDownloadQueue={() => setIsDownloadQueueOpen(true)}
         />
       </div>
+
+      {/* YouTube Mini Floating Player Window */}
+      <YouTubeMiniPlayer
+        onOpenDownloadModal={(track) => setSelectedDownloadTrack(track)}
+      />
 
       {/* Slide-over Audio Playback Queue Drawer */}
       <QueueDrawer isOpen={isQueueOpen} onClose={() => setIsQueueOpen(false)} />

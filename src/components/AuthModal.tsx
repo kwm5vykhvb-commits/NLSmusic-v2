@@ -207,7 +207,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     >
       <div
         id="auth-modal-content"
-        className="w-full max-w-md bg-[#181818] border border-[#2e2e2e] rounded-3xl p-6 shadow-2xl relative overflow-hidden flex flex-col space-y-4 max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-md bg-[#181818] border border-[#2e2e2e] rounded-3xl p-6 shadow-2xl relative flex flex-col space-y-4 max-h-[85vh] sm:max-h-[90vh] overflow-y-auto pb-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Glow Accent */}

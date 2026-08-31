@@ -17,6 +17,11 @@ interface AudioContextType {
   isBuffering: boolean;
   error: string | null;
   audioVisualizerData: Uint8Array | null;
+  isYouTubeOpen: boolean;
+  isYouTubeMinimized: boolean;
+  setIsYouTubeOpen: (open: boolean) => void;
+  setIsYouTubeMinimized: (minimized: boolean) => void;
+  toggleYouTube: () => void;
   playTrack: (track: Track, newQueue?: Track[]) => Promise<void>;
   togglePlay: () => void;
   pause: () => void;
@@ -48,6 +53,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [history, setHistory] = useState<Track[]>([]);
   const [isBuffering, setIsBuffering] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isYouTubeOpen, setIsYouTubeOpen] = useState(false);
+  const [isYouTubeMinimized, setIsYouTubeMinimized] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const activeBlobUrlRef = useRef<string | null>(null);
@@ -212,6 +219,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
 
       setCurrentTrack(track);
+      setIsYouTubeOpen(true);
+      setIsYouTubeMinimized(false);
 
       // 1. Check if offline audio exists in IndexedDB
       const offlineUrl = await getOfflineAudioUrl(track.id);
@@ -461,6 +470,10 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setQueue([]);
   }, []);
 
+  const toggleYouTube = useCallback(() => {
+    setIsYouTubeOpen((prev) => !prev);
+  }, []);
+
   return (
     <AudioContext.Provider
       value={{
@@ -477,6 +490,11 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isBuffering,
         error,
         audioVisualizerData: visualizerData,
+        isYouTubeOpen,
+        isYouTubeMinimized,
+        setIsYouTubeOpen,
+        setIsYouTubeMinimized,
+        toggleYouTube,
         playTrack,
         togglePlay,
         pause,
