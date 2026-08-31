@@ -45,6 +45,7 @@ import { TagEditorModal } from "./components/TagEditorModal";
 import { DownloadQueueDrawer } from "./components/DownloadQueueDrawer";
 import { MultiSelectBar } from "./components/MultiSelectBar";
 import { YouTubeMiniPlayer } from "./components/YouTubeMiniPlayer";
+import { AdSenseBanner } from "./components/AdSenseBanner";
 import { searchTracks, getTrendingTracks } from "./services/api";
 
 function MainApp() {
@@ -351,6 +352,9 @@ function MainApp() {
                     ))}
                   </div>
 
+                  {/* Google AdSense Banner (Non-intrusive Native Slot) */}
+                  <AdSenseBanner className="max-w-3xl mx-auto" />
+
                   {/* Dynamic Pagination Component */}
                   <Pagination
                     currentPage={searchCurrentPage}
@@ -565,6 +569,9 @@ function MainApp() {
                   ))}
                 </div>
               </div>
+
+              {/* Google AdSense Banner (Home Feed Slot) */}
+              <AdSenseBanner className="max-w-4xl mx-auto" />
 
               {/* SECTION: RAP */}
               <div className="pt-2 space-y-3">
