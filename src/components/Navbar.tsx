@@ -228,8 +228,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header
       id="nls-navbar"
-      className="h-14 sm:h-16 px-3 sm:px-6 flex items-center justify-between gap-2.5 sm:gap-4 bg-[#121212]/95 backdrop-blur-md sticky top-0 z-30 border-b border-[#282828]/50"
+      className="pt-[env(safe-area-inset-top,0px)] px-3 sm:px-6 bg-[#121212]/95 backdrop-blur-md sticky top-0 z-30 border-b border-[#282828]/50 flex-shrink-0"
     >
+      <div className="h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
       {/* Mobile Logo Brand */}
       <div className="flex md:hidden items-center gap-2 flex-shrink-0">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#1db954] to-[#1ed760] flex items-center justify-center shadow-md shadow-[#1db954]/20">
@@ -534,6 +535,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="hidden sm:inline">Connexion</span>
           </button>
         )}
+      </div>
       </div>
     </header>
   );

@@ -80,9 +80,6 @@ function MainApp() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isFullScreenOpen, setIsFullScreenOpen] = useState(false);
 
-  // Quick link converter input
-  const [quickUrl, setQuickUrl] = useState("");
-
   const mainScrollRef = useRef<HTMLElement | null>(null);
 
   const { playTrack, togglePlay, currentTrack, isPlaying } = useAudio();
@@ -182,14 +179,6 @@ function MainApp() {
     },
     []
   );
-
-  const handleQuickUrlSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!quickUrl.trim()) return;
-    setSearchQuery(quickUrl.trim());
-    handlePerformSearch(quickUrl.trim(), 1);
-    setQuickUrl("");
-  };
 
   const spotlightTrack = currentTrack || featuredTracks[0] || null;
   const isSpotlightPlaying = currentTrack?.id === spotlightTrack?.id && isPlaying;
@@ -372,42 +361,6 @@ function MainApp() {
           {/* VIEW: Home / Discover (Mobile-Friendly Grid) */}
           {currentView === "home" && (
             <div className="space-y-4 sm:space-y-6 animate-in fade-in duration-300">
-              {/* Top Quick Converter Bar */}
-              <div className="bg-[#181818] border border-[#282828] hover:border-[#383838] transition-colors rounded-2xl p-3.5 sm:p-5 shadow-lg flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#1db954]/20 text-[#1db954] flex items-center justify-center flex-shrink-0 border border-[#1db954]/30">
-                    <LinkIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="text-xs sm:text-sm font-bold text-white truncate">Convertisseur YouTube MP3</h3>
-                      <span className="text-[9px] bg-[#242424] text-[#1db954] font-extrabold px-1.5 py-0.2 rounded border border-[#333]">
-                        {settings.defaultBitrate || 320}k HD
-                      </span>
-                    </div>
-                    <p className="text-[10px] sm:text-xs text-zinc-400 truncate">
-                      Collez un lien YouTube pour extraire le MP3
-                    </p>
-                  </div>
-                </div>
-
-                <form onSubmit={handleQuickUrlSubmit} className="flex items-center gap-1.5 w-full sm:w-auto flex-1 max-w-md">
-                  <input
-                    type="text"
-                    value={quickUrl}
-                    onChange={(e) => setQuickUrl(e.target.value)}
-                    placeholder="https://youtube.com/watch?v=..."
-                    className="flex-1 bg-[#242424] border border-[#333] focus:border-[#1db954] rounded-full py-1.5 sm:py-2 pl-3 pr-3 text-xs text-white placeholder:text-zinc-500 outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="px-3.5 py-1.5 sm:py-2 bg-[#1db954] hover:bg-[#1ed760] text-black text-xs font-black rounded-full transition-transform active:scale-95 whitespace-nowrap shadow"
-                  >
-                    CONVERTIR
-                  </button>
-                </form>
-              </div>
-
               {/* PRIMARY CARDS (Bento / Responsive on mobile) */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 sm:gap-4">
                 {/* SPOTLIGHT CARD */}
