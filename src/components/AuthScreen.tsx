@@ -153,7 +153,8 @@ export const AuthScreen: React.FC = () => {
   return (
     <div
       id="auth-mandatory-screen"
-      className="min-h-screen w-full bg-[#0a0a0a] text-white flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 py-6 sm:py-10 overflow-y-auto relative font-['Plus_Jakarta_Sans',sans-serif]"
+      className="min-h-screen min-h-[100dvh] w-full bg-[#0a0a0a] text-white flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 py-6 sm:py-10 overflow-y-auto relative font-['Plus_Jakarta_Sans',sans-serif]"
+      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
     >
       {/* Subtle Background Glows */}
       <div className="fixed top-[-15%] left-[-10%] w-[450px] h-[450px] bg-[#1db954]/15 rounded-full blur-[120px] pointer-events-none" />

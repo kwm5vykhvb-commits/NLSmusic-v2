@@ -196,7 +196,7 @@ function MainApp() {
   const isSpotlightDownloaded = spotlightTrack ? (isDownloaded(spotlightTrack.id) || spotlightTrack.isDownloaded) : false;
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#000000] text-[#FFFFFF] font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="flex h-full h-[100dvh] max-h-[100dvh] w-full overflow-hidden bg-[#000000] text-[#FFFFFF] font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Left Sidebar (Desktop Only) */}
       <Sidebar
         currentView={currentView}
@@ -209,7 +209,7 @@ function MainApp() {
       />
 
       {/* Main Container */}
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden relative">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 h-full overflow-hidden relative">
         {/* Top Navbar */}
         <Navbar
           searchQuery={searchQuery}
@@ -237,7 +237,8 @@ function MainApp() {
         {/* Content Scrollable Area */}
         <main
           ref={mainScrollRef}
-          className="flex-1 overflow-y-auto custom-scrollbar bg-gradient-to-b from-[#121212] via-[#0d0d0d] to-[#000000] p-3 sm:p-5 md:p-8 pb-32 md:pb-6"
+          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain custom-scrollbar bg-gradient-to-b from-[#121212] via-[#0d0d0d] to-[#000000] p-3 sm:p-5 md:p-8 pb-36 md:pb-8"
+          style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
         >
           {/* VIEW: Search Results */}
           {currentView === "search" && (

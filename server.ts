@@ -754,10 +754,32 @@ async function searchYouTubeSafe(query: string, limit = 50): Promise<any[]> {
   const cleanQuery = (query || "").trim();
   if (!cleanQuery) return [];
 
-  // Strategy 1: Direct YouTube HTML scraping (ytInitialData parser)
+  // Strategy 1: yt-search (fast, stable, built-in)
+  try {
+    const ytsPromise = yts({ query: cleanQuery });
+    const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000));
+    const searchResult: any = await Promise.race([ytsPromise, timeoutPromise]);
+
+    if (searchResult && Array.isArray(searchResult.videos) && searchResult.videos.length > 0) {
+      return searchResult.videos.slice(0, limit).map((v: any) => ({
+        id: v.videoId,
+        title: String(v.title || "Titre YouTube").trim(),
+        artist: String(v.author?.name || "Artiste YouTube").trim(),
+        duration: v.seconds || parseDurationString(v.timestamp),
+        durationFormatted: v.timestamp || formatSeconds(v.seconds || 210),
+        views: Number(v.views) || 100000,
+        thumbnail: v.thumbnail || `https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`,
+        ago: v.ago || "",
+        url: v.url || `https://www.youtube.com/watch?v=${v.videoId}`,
+        source: "youtube",
+      }));
+    }
+  } catch {}
+
+  // Strategy 2: Direct YouTube HTML scraping (ytInitialData parser)
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 4000);
+    const timeout = setTimeout(() => controller.abort(), 3500);
     const res = await fetch(`https://www.youtube.com/results?search_query=${encodeURIComponent(cleanQuery)}`, {
       signal: controller.signal,
       headers: {
@@ -825,14 +847,12 @@ async function searchYouTubeSafe(query: string, limit = 50): Promise<any[]> {
         }
       }
     }
-  } catch (e) {
-    console.warn("Direct YouTube search strategy failed:", e);
-  }
+  } catch {}
 
-  // Strategy 2: YouTubei v1 Web API
+  // Strategy 3: YouTubei v1 Web API
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 4000);
+    const timeout = setTimeout(() => controller.abort(), 3500);
     const res = await fetch("https://www.youtube.com/youtubei/v1/search?prettyPrint=false", {
       method: "POST",
       signal: controller.signal,
@@ -899,15 +919,13 @@ async function searchYouTubeSafe(query: string, limit = 50): Promise<any[]> {
       }
       if (videos.length > 0) return videos.slice(0, limit);
     }
-  } catch (e) {
-    console.warn("YouTubei v1 search strategy failed:", e);
-  }
+  } catch {}
 
-  // Strategy 3: Invidious Instances
+  // Strategy 4: Invidious Instances
   for (const inst of INVIDIOUS_INSTANCES) {
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 2500);
+      const timeout = setTimeout(() => controller.abort(), 2000);
       const res = await fetch(`${inst}/api/v1/search?q=${encodeURIComponent(cleanQuery)}&type=video`, {
         signal: controller.signal,
         headers: { "User-Agent": "NLSmusic-App/1.0" },
